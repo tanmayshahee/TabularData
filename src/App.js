@@ -1,26 +1,83 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Table from "./Table";
+import RenderCustomComponent from "./RenderCustomComponent";
+const App = () => {
+  const [tableData, setTableData] = useState();
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  useEffect(() => {
+    axios.get("http://localhost:3010/shipments").then((res) => {
+      if (res.status === 200) {
+        console.log(res);
+        setTableData(res.data);
+      }
+    });
+  }, []);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Data",
+        columns: [
+          {
+            Header: "Id",
+            accessor: "id",
+          },
+          {
+            Header: "Name",
+            accessor: "name",
+          },
+          {
+            Header: "Cargo",
+            accessor: "cargo",
+            Cell: ({ cell: { value } }) => (
+              <RenderCustomComponent values={value} />
+            ),
+          },
+          {
+            Header: "Mode",
+            accessor: "mode",
+          },
+          {
+            Header: "Type",
+            accessor: "type",
+          },
+          {
+            Header: "Destination",
+            accessor: "destination",
+          },
+          {
+            Header: "Origin",
+            accessor: "origin",
+          },
+          {
+            Header: "Services",
+            accessor: "services",
+            Cell: ({ cell: { value } }) => (
+              <RenderCustomComponent values={value} />
+            ),
+          },
+          {
+            Header: "Total",
+            accessor: "total",
+          },
+          {
+            Header: "Status",
+            accessor: "status",
+          },
+          {
+            Header: "User Id",
+            accessor: "userId",
+          },
+        ],
+      },
+    ],
+    []
   );
-}
+
+  //const data = React.useMemo(() => getData(), []);
+
+  return tableData ? <Table columns={columns} data={tableData} /> : null;
+};
 
 export default App;

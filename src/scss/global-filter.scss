@@ -1,0 +1,18 @@
+.search-global {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 25px;
+  border: 1px solid #ededed;
+  padding: 10px;
+  margin-left: 25px;
+  margin-right: 25px;
+  border-radius: 8px;
+
+  .input-bar {
+    border: none;
+    margin-left: 15px;
+    font-size: 1.1rem;
+    width: 100%;
+    outline: none;
+  }
+}
